@@ -22,7 +22,7 @@ export default function Repository({ data, onRefresh }) {
                 </Stat>
             </Stats>
 
-            <Refresh onPress={onRefresh}>
+            <Refresh onPress={() => onRefresh(data)}>
                 <Icon name="refresh" color="#7159c1" size={16} />
                 <RefreshText>ATUALIZAR</RefreshText>
             </Refresh>
