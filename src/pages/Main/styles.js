@@ -10,12 +10,24 @@ export const Container = styled(LinearGradient).attrs({
     padding-top: ${getStatusBarHeight}px;
 `;
 
-export const Title = styled.Text`
+export const Titles = styled.View`
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
     margin-top: 25px;
+    padding: 0 20px;
+`;
+
+export const Title = styled.Text`
     color: #fff;
     font-size: 28px;
     font-weight: bold;
-    padding: 0 20px;
+`;
+
+export const Delete = styled.Text`
+    color: #fff;
+    font-size: 15px;
 `;
 
 export const DivInput = styled.View`    
@@ -25,7 +37,7 @@ export const DivInput = styled.View`
 `;
 
 export const Input = styled.TextInput.attrs({
-    placeholderTextColor: '#323232'
+    placeholderTextColor: '#adadad'
 })`
     width: 85%;
     border-radius: 3px;

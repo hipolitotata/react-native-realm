@@ -6,7 +6,9 @@ import {
 
 import {
   Container,
+  Titles,
   Title,
+  Delete,
   DivInput,
   Input,
   ButtonIcon,
@@ -22,7 +24,7 @@ import getRealm from '~/services/realm';
 
 export default function Main() {
 
-  const [input, setInput] = useState('hipolitotata/context-api');
+  const [input, setInput] = useState('');
   const [repos, setRepos] = useState([]);
 
   const [error, setError] = useState(false);
@@ -37,21 +39,33 @@ export default function Main() {
     getRepos();
   }, [])
 
-  async function addRepo(repository) {
-    const data = {
-      id: repository.id,
-      name: repository.name,
-      fullName: repository.full_name,
-      description: repository.description || 'Sem descrição',
-      stars: repository.stargazers_count,
-      forks: repository.forks_count,
-    };
+  async function deleteAll() {
     const realm = await getRealm();
-
     realm.write(() => {
-      realm.create('Repository', data, 'modified');
+      realm.deleteAll()
     });
-    return data;
+
+    setRepos([]);
+  };
+
+  async function addRepo(repository) {
+    try {
+      const data = {
+        id: repository.id,
+        name: repository.name,
+        fullName: repository.full_name,
+        description: repository.description || 'Sem descrição',
+        stars: repository.stargazers_count,
+        forks: repository.forks_count,
+      };
+      const realm = await getRealm();
+
+      realm.write(() => {
+        realm.create('Repository', data, 'modified');
+      });
+      return data;
+
+    } catch (err) { }
   };
 
   async function getRepo() {
@@ -80,7 +94,11 @@ export default function Main() {
   return (
     <Container>
       <StatusBar barStyle="light-content" backgroundColor="#7159c1" />
-      <Title>Repositórios</Title>
+
+      <Titles>
+        <Title>Repositórios</Title>
+        <Delete onPress={deleteAll}>Deletar todos</Delete>
+      </Titles>
 
       <DivInput>
         <Input
@@ -89,7 +107,7 @@ export default function Main() {
           value={input}
           onChangeText={setInput}
           error={error}
-          placeholder="Nome do repositório" />
+          placeholder="Nome do repositório (ex: angular/angular)" />
         <ButtonIcon onPress={getRepo}>
           <Icon name="add" color="#fff" size={25} />
         </ButtonIcon>
